@@ -1,13 +1,13 @@
 
 {
-  "name": "surprise-2020",
+  "name": "surprise-2022",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test deploy": "npm run build && firebase emulators:start",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy --only hosting:surprise2022"
   },
   "dependencies": {
     "@types/lodash": "^4.14.165",

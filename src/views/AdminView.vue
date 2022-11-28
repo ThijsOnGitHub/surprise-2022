@@ -14,7 +14,6 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import scenes from "@/components/scenes/scenes";
-
     @Component({
       components: Object.assign(scenes,{
 

@@ -29,7 +29,7 @@ import {Component, Vue, Watch} from "vue-property-decorator"
       sessionExist:boolean = true
       selected:string = 'screen'
 
-      pages=['screen','user','admin','speaker']
+      pages=['screen','user','admin','speaker','subScreen']
 
 
       async goToNextPage(){

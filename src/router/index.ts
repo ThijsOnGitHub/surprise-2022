@@ -7,6 +7,7 @@ import UserView from "@/views/UserView.vue";
 import AdminView from "@/views/AdminView.vue";
 import Start from "@/views/Start.vue";
 import Speaker from "@/views/Speaker.vue";
+import SubScreen from "@/views/SubScreen.vue";
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes: Array<RouteConfig> = [
     path:'/:id/screen',
     name: 'Screen',
     component:Screen
+  },
+  {
+    path:'/:id/subScreen',
+    name: 'Subscreen',
+    component:SubScreen
   },
   {
     path: '/:id/register',

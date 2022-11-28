@@ -27,7 +27,7 @@ export default class SoundQuestion extends Vue {
   @Prop({required:true})wrongAnswers!:string
   @Prop({required:true})question!:string
   @Prop({required:true})askQuestionAudio!:string
-  @Prop({default:require('@/assets/audio/achtergrond_muziek.mp3')})questionAudio!:string
+  @Prop({default:require('@/assets/2021/audio/achtergrond_muziek.mp3')})questionAudio!:string
   @Prop({required:true})answerAudio!:string
   @Prop({default:15})totalSeconds!:number
   @Prop({default:0})showAnswerAfter!:number

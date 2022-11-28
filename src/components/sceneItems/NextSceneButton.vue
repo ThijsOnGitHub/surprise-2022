@@ -1,21 +1,25 @@
 <template>
-<button  @click="nextScene" v-if="showButton">Volgende Scene</button>
+  <div v-if="rol == null || role === 'admin' ">
+    <button  @click="nextScene" v-if="showButton">Volgende Scene</button>
+  </div>
 </template>
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
+import {Roles} from "@/Interfaces/sessionInterface";
 
 @Component({
   components: {}
 })
 export default class NextSceneButton extends Vue {
+  @Prop() role!: Roles
   @Prop() setShowNext:boolean|undefined
   @Prop() restoreState!: {[key:string]:any}
   get showButton(){
     try{
       return this.$store.getters.getSceneData.showNext
     }catch (e){
-      return false
+      return true
     }
   }
 

@@ -8,6 +8,11 @@ export class Session{
 
     public scenesData=[
         new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+
+        /*new SceneData(true),
         new SceneData(false,{kloppen:0,sintVerhaal:0}),
         new SceneData(false),
         new SceneData(false),
@@ -20,7 +25,7 @@ export class Session{
         new QuestionScene(),
         new QuestionScene(),
         new SceneData(false),
-        new SceneData(false)
+        new SceneData(false)*/
     ]
     public users:{[userId:string]:User}
     public scene:number
@@ -68,4 +73,4 @@ export class GameData{
     public test:number
     public correctAnswers:number
 }
-export type Roles = 'admin'|'screen'|'user';
+export type Roles = 'admin'|'screen'|'user'|'subScreen';
