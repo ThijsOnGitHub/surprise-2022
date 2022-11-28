@@ -1,0 +1,43 @@
+.centerContent{
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+    >*+*{
+      margin-bottom: 10px;
+    }
+
+}
+.full{
+  width: 100vw;
+  height: 100vh;
+}
+.columnRow{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &.--spaced{
+    >*+*{
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.optionGrid{
+  display: flex;
+  max-height: 100%;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1000px;
+  justify-content: center;
+  align-items: center;
+
+  >*{
+    margin: 10px;
+  }
+
+}
