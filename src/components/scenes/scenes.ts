@@ -10,6 +10,18 @@ import scene7 from "@/components/scenes/2022/scene7.vue";
 import scene10 from "@/components/scenes/2022/scene10.vue";
 import scene6 from "@/components/scenes/2022/scene6.vue";
 import scene5 from "@/components/scenes/2022/scene5.vue";
+import scene12 from "@/components/scenes/2022/scene12.vue";
+import scene13 from "@/components/scenes/2022/scene13.vue";
+import scene14 from "@/components/scenes/2022/scene14.vue";
+import scene15 from "@/components/scenes/2022/scene15.vue";
+import scene16 from "@/components/scenes/2022/scene16.vue";
+import scene17 from "@/components/scenes/2022/scene17.vue";
+import scene18 from "@/components/scenes/2022/scene18.vue";
+import scene19 from "@/components/scenes/2022/scene19.vue";
+import scene20 from "@/components/scenes/2022/scene20.vue";
+import scene21 from "@/components/scenes/2022/scene21.vue";
+import scene22 from "@/components/scenes/2022/scene22.vue";
+import scene23 from "@/components/scenes/2022/scene23.vue";
 
 const scenes = {
     scene0,
@@ -24,6 +36,18 @@ const scenes = {
     scene9,
     scene10,
     scene11,
+    scene12,
+    scene13,
+    scene14,
+    scene15,
+    scene16,
+    scene17,
+    scene18,
+    scene19,
+    scene20,
+    scene21,
+    scene22,
+    scene23
 }
     /*{
     scene0,

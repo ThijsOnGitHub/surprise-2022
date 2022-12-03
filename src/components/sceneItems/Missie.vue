@@ -1,18 +1,34 @@
 <template>
-<div class="background">
-  <div class="komu MissieText centerContent">{{ text }}</div>
+<div class="background centerContent">
+  <div class="centerContent limiter">
+    <div class="komu MissieText centerContent full" ref="text" v-html="text"></div>
+  </div>
 </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {Prop} from "vue-property-decorator";
+import {Prop, Watch} from "vue-property-decorator";
+import textFit from "textfit";
 
 @Component
 export default class Missie extends Vue {
+  $refs!: {
+    text: HTMLDivElement
+  }
   @Prop({required:true}) text!: string
 
+  @Watch('text')
+  onTextChange(){
+    Vue.nextTick().then(() => {
+      textFit(this.$refs.text, { maxFontSize: 5000});
+    })
+  }
+
+  mounted(){
+    textFit(this.$refs.text,{maxFontSize: 5000});
+  }
 }
 </script>
 
@@ -25,7 +41,11 @@ export default class Missie extends Vue {
 }
 .MissieText{
   color: white;
-  font-size: 15em
+  text-align: center;
+}
+.limiter{
+  width: 75%;
+
 }
 </style>
     

@@ -6,12 +6,11 @@
     <div class="optionGrid">
       <p class="user buttonStyle" v-for="(user,key) in $store.state.sessionData.users"  @click="()=>kickUser(key)">{{user.name}}</p>
     </div>
-
-    <NextSceneButton v-if="names.length !== 0" />
+    <NextSceneButton role="admin" />
   </div>
-  <div v-else-if="role === 'screen'" class="centerContent" >
+  <div v-else-if="role === 'screen'" class="centerContent"  >
     <div class="columnRow call__content --spaced">
-      <h1>De pietentest</h1>
+      <h1>{{ testName }}</h1>
       <p>Meld je nu aan via de QR-code:</p>
       <img :src="userQrCode" class="qr_code" alt="adminQrCode"/>
       <h1>Aanmeldingen:</h1>
@@ -37,6 +36,7 @@ import NextSceneButton from "@/components/sceneItems/NextSceneButton.vue";
 })
 export default class scene4 extends Vue {
   @Prop({required:true})role!: Roles
+  @Prop({required:true,default: "De pietentest"})testName!: string
 
 
   kickUser(userId:string){
@@ -149,4 +149,5 @@ export default class scene4 extends Vue {
     height: 3vw;
   }
 }
+
 </style>

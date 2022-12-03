@@ -22,7 +22,6 @@ export default class Speaker extends Vue {
     this.sounds = [new Audio(require('@/assets/2021/audio/scene12_speaker.mp3'))]
     this.sounds.forEach(value => value.load())
     this.log= JSON.stringify(this.sounds)
-
   }
 
   mounted(){

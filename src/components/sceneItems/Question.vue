@@ -1,7 +1,7 @@
 <template>
 <div v-if="role === 'admin'">
   <h1>De vraag speelt zich vanzelf af</h1>
-  <NextSceneButton :set-show-next="false" :restore-state="{questionState:'askQuestion',showAnswer:false}" />
+  <NextSceneButton :role="'admin'" :set-show-next="false" :restore-state="{questionState:'askQuestion',showAnswer:false}" />
 </div>
 <div v-else-if="role ==='screen' " class="full">
   <div v-if="state==='askQuestion' " class="centerContent">
@@ -59,7 +59,7 @@
 
       </template>
 
-      <p v-if="showAnswer">Je hebt nu {{this.$store.getters.userData.gameData.correctAnswers}} punten</p>
+      <p v-if="showAnswer">Je hebt nu {{points}} punten</p>
     </div>
   </div>
 </div>
@@ -67,7 +67,7 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {Roles} from "@/Interfaces/sessionInterface";
+import {Roles, Session, User} from "@/Interfaces/sessionInterface";
 import {shuffle} from 'lodash'
 import NextSceneButton from "@/components/sceneItems/NextSceneButton.vue";
 
@@ -113,19 +113,28 @@ export default class Question extends Vue {
   correctAnswerSubmitted:boolean=false
   valueAnswerSubmitted:string=''
 
+  get points(){
+    const submittedAnswers = (this.$store.getters.userData as User).gameData?.submittedAnswers ?? []
+    if(submittedAnswers == null){
+      return 0
+    }
+    return Object.values(submittedAnswers).filter((answer)=>answer.isCorrect).length
+  }
+
   submitAnswer(answer:string){
     this.answerSubmitted=true
     this.valueAnswerSubmitted = answer
+    this.$store.dispatch( "setUserGameData", {submittedAnswers:{...(this.$store.getters.userData.gameData?.submittedAnswers ?? {}),[this.$store.getters.scene]: {isCorrect:answer === this.correctAnswer,answer}}})
     if(answer === this.correctAnswer){
-      console.log('hallo')
-      this.correctAnswerSubmitted =true
-      this.$store.dispatch("setUserGameData",{correctAnswers:this.$store.getters.userData.gameData.correctAnswers+1})
+      this.correctAnswerSubmitted = true
     }
   }
 
   setQuestionState(newState:QuestionStates){
     this.$store.dispatch("setSceneData",{questionState:newState})
   }
+
+
 
   setState(state:Partial<this>){
     Object.entries(state).forEach((value)=> {
@@ -146,31 +155,61 @@ export default class Question extends Vue {
   }
 
   unwatchStore:()=>void =()=>{}
+  unwatchSubmittedAnswers:()=>void =()=>{}
 
-  mounted(){
+  async mounted(){
     this.answers.push(...this.wrongAnswers)
     this.answers.push(this.correctAnswer)
     this.answers=shuffle(this.answers)
     if(this.role ==='screen'){
       this.startAskQuestion(this.setQuestionState,this.setState,this.addAudioFile)
+      await this.setQuestionState('askQuestion')
+      await this.$store.dispatch("setSceneData",{showAnswer:false})
+      const newObject ={users:
+            Object.fromEntries(
+                (Object.entries(this.$store.state.sessionData.users) as [string,User][]).map((item)=>{
+                  const newUser = {...item[1],gameData:{...item[1].gameData,submittedAnswers:{[this.$store.getters.scene]:null}}}
+                  return [item[0],newUser]
+                })
+            )
+      }
+      console.log(newObject,this.$store.getters.scene)
+      await this.$store.dispatch("updateSession",{users:
+            Object.fromEntries(
+                (Object.entries(this.$store.state.sessionData.users) as [string,User][]).map((item)=>{
+                  const newUser = {...item[1],gameData:{...item[1].gameData,submittedAnswers:{...item[1].gameData?.submittedAnswers,[this.$store.getters.scene]:null}}}
+                  return [item[0],newUser]
+                })
+            )
+      })
       this.unwatchStore=this.$store.watch((state1, getters) => getters.getSceneData,(value,oldValue) => {
         if(value.questionState!==oldValue.questionState){
           this.stopAllSound()
           const state: QuestionStates =value.questionState
           switch (state){
-            case "answer":
-              this.startAnswer(this.setQuestionState,this.setState,this.addAudioFile)
-              break;
+            case "askQuestion":
+              console.log("askQuestion")
+              this.startAskQuestion(this.setQuestionState,this.setState,this.addAudioFile)
+            break;
             case "question":
+              console.log("question")
               this.startQuestion(this.setQuestionState,this.setState,this.addAudioFile)
               break;
-            case "askQuestion":
-              this.startAskQuestion(this.setQuestionState,this.setState,this.addAudioFile)
+            case "answer":
+              console.log("answer")
+              this.startAnswer(this.setQuestionState,this.setState,this.addAudioFile)
               break;
           }
         }
       })
-
+      this.unwatchSubmittedAnswers=this.$store.watch((state1, getters) => state1.sessionData,(value:Session,oldValue) => {
+        if(Object.values(value.users).every((user) => {
+          return  this.$store.getters.getSceneData.questionState === 'question' && user.gameData?.submittedAnswers?.[this.$store.getters.scene] != null
+        })){
+          console.log("skipped")
+          this.setQuestionState('answer')
+        }
+      })
     }
   }
 

@@ -32,6 +32,7 @@ export default class SoundQuestion extends Vue {
   @Prop({default:15})totalSeconds!:number
   @Prop({default:0})showAnswerAfter!:number
 
+  questionInterval : number| null = null
   startAskQuestion:QuestionStateFunction<Question>=(setQuestionState, setState, addAudioFile) => {
     let audioFile = addAudioFile(new Audio(this.askQuestionAudio))
     audioFile.onended =()=>setQuestionState("question")
@@ -42,24 +43,36 @@ export default class SoundQuestion extends Vue {
     addAudioFile(new Audio(this.questionAudio)).play()
     let totalSeconds=this.totalSeconds
     setState({seconds:totalSeconds})
-    let interval=setInterval(()=>{
+    this.questionInterval=setInterval(()=>{
       totalSeconds--
       setState({seconds:totalSeconds})
       if(totalSeconds<=0){
         setQuestionState("answer")
-        clearInterval(interval)
+        if(this.questionInterval){clearInterval(this.questionInterval)}
       }
     },1000)
   }
 
+
   startAnswer:QuestionStateFunction<Question>= (setQuestionState, setState, addAudioFile) => {
+    if(this.questionInterval){clearInterval(this.questionInterval)}
     let audio = addAudioFile(new Audio(this.answerAudio))
-    audio.onended = ()=>this.$store.dispatch("setSceneData",{showNext:true})
+    let count = 0
+    const timeout =setInterval(()=>{
+      count+=0.5
+      console.log(count)
+    },500)
+    audio.onended = ()=> {
+      this.$store.dispatch("setSceneData", {showNext: true})
+      clearInterval(timeout)
+    }
     audio.play()
     setTimeout(()=>{
      this.$store.dispatch("setSceneData",{showAnswer:true})
     },this.showAnswerAfter)
   }
+
+
 
 }
 

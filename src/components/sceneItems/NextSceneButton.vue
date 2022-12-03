@@ -1,6 +1,6 @@
 <template>
-  <div v-if="rol == null || role === 'admin' ">
-    <button  @click="nextScene" v-if="showButton">Volgende Scene</button>
+  <div v-if="role == null || role ==='admin' ">
+    <button @click="nextScene" v-if="showButton">Volgende Scene</button>
   </div>
 </template>
 

@@ -1,10 +1,7 @@
 <template>
-  <div v-if="role === 'screen'" class="full">
-    <Missie text="Het was: Het paard (van sinterklaas)" />
-  </div>
-  <div v-else-if="role === 'subScreen'" class="full">
-    <Missie text="Benthe, Je mag weer gaan zitten" />
-    <AudioStart audio="/2022/audio/benthe-goed.mp3" />
+  <div class="full" v-if="role === 'screen'">
+    <AudioStart audio="/2022/audio/start-missie-2.mp3" />
+    <Missie text="Missie 2" />
   </div>
   <NextSceneButton v-else :role="role" />
 </template>
@@ -15,14 +12,13 @@ import Component from "vue-class-component";
 import {Roles} from "@/Interfaces/sessionInterface";
 import {Prop} from "vue-property-decorator";
 import AudioStart from "@/components/sceneItems/AudioStart.vue";
-import Missie from "@/components/sceneItems/Missie.vue";
 import NextSceneButton from "@/components/sceneItems/NextSceneButton.vue";
+import Missie from "@/components/sceneItems/Missie.vue";
 @Component({
-  components: {NextSceneButton, Missie, AudioStart}
+  components: {NextSceneButton, AudioStart,Missie}
 })
 export default class scene2 extends Vue {
-  @Prop({required:true})role!: Roles
-
+@Prop({required:true})role!: Roles
 }
 </script>
 

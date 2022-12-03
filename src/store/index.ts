@@ -93,6 +93,10 @@ let vuex = new Vuex.Store({
       }
       return
     },
+    updateSession:(injectee, payload) => {
+      let firebaseRef=database.ref(`sessions/${injectee.state.sessionId}`)
+      firebaseRef.update(payload)
+    },
     register:(injectee, payload) => {
       if(injectee.getters.userData){
         injectee.state.firebaseSessionRef?.child('users').child(injectee.state.userId).update({name:payload})

@@ -1,9 +1,9 @@
 <template>
   <div v-if="role === 'screen'" class="full">
-    <Missie text="(Sinterklaasliedjes) zingen" />
+    <Missie text="Het was: (Sinterklaasliedjes) zingen" />
   </div>
   <div v-else-if="role === 'subScreen'" class="full">
-    <Missie text="(Sinterklaasliedjes) zingen" />
+    <Missie text="Diana, je mag weer gaan zitten" />
     <AudioStart audio="/2022/audio/diana-goed.mp3" />
   </div>
   <NextSceneButton v-else :role="role" />

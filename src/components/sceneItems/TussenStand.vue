@@ -4,24 +4,28 @@
     <p>Leuk dat je meedeed!</p>
     <NextSceneButton/>
   </div>
-  <div v-else-if="role === 'screen' ">
-    <h1>De uitslag</h1>
-    <div class="columnRow">
-      <div class="rowItem" v-for="(item,index) in orderedList">
-        <div class="rank">{{index+1}}</div>
-        <div>{{item[1].name}}</div>
-        <div>{{item[1].gameData.correctAnswers}}</div>
+  <div v-else-if="role === 'screen' || role === 'user' " class="full ">
+    <div >
+      <h1>De uitslag</h1>
+      <div class="columnRow">
+        <div class="rowItem" v-for="(item,index) in orderedList">
+          <div class="rank">{{index+1}}</div>
+          <div>{{item[1].name}}</div>
+          <div>{{item[1].correctAnswers}}</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else>
-    <p>Jij staat {{position}}{{position===1?'ste':'e'}}</p>
+    <div v-if="role === 'user'">
+      <div class="centerContent">
+        <p>Jij staat {{position}}{{position===1?'ste':'e'}}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
-import {Roles, User} from "@/Interfaces/sessionInterface";
+import {GameData, Roles, User} from "@/Interfaces/sessionInterface";
 import NextSceneButton from "@/components/sceneItems/NextSceneButton.vue";
 
 @Component({
@@ -45,10 +49,26 @@ export default class TussenStand extends Vue {
     return;
   }
 
+  getCorrectAnswers(gameData: GameData) {
+    if(gameData.submittedAnswers == null){
+      return 0
+    }
+    return Object.values(gameData.submittedAnswers).filter((value) => value.isCorrect).length
+  }
+
+  get usersWithCorrectAswers() {
+    const users = this.$store.state.sessionData.users
+    const usersWithCorrectAnswers = Object.entries(users).map((value) => {
+      const user: User = value[1] as User
+      return [value[0], {name:user.name, correctAnswers: this.getCorrectAnswers(user.gameData ?? {submittedAnswers: {}})}]
+    })
+    return Object.fromEntries(usersWithCorrectAnswers)
+  }
+
   get orderedList(){
-    let list =Object.entries<User>(this.$store.state.sessionData.users)
+    let list =Object.entries<{username:string,correctAnswers:number}>(this.usersWithCorrectAswers)
     return list.sort((a, b) => {
-      return b[1].gameData.correctAnswers-a[1].gameData.correctAnswers
+      return b[1].correctAnswers-a[1].correctAnswers
     })
   }
 

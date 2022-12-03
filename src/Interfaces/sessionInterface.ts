@@ -11,7 +11,23 @@ export class Session{
         new SceneData(true),
         new SceneData(true),
         new SceneData(true),
-
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new SceneData(true),
+        new QuestionScene(),
+        new QuestionScene(),
+        new QuestionScene(),
+        new QuestionScene(),
+        new QuestionScene(),
+        new QuestionScene(),
+        new SceneData(true),
         /*new SceneData(true),
         new SceneData(false,{kloppen:0,sintVerhaal:0}),
         new SceneData(false),
@@ -62,15 +78,13 @@ export class User{
         this.gameData=new GameData()
     }
     public name:string
-    public gameData:GameData
+    public gameData?:GameData
 
 }
 export class GameData{
     constructor() {
-        this.correctAnswers=0
-        this.test=0
+        this.submittedAnswers={}
     }
-    public test:number
-    public correctAnswers:number
+    public submittedAnswers:{[key:string]: { answers:string,isCorrect: boolean }}|null
 }
 export type Roles = 'admin'|'screen'|'user'|'subScreen';

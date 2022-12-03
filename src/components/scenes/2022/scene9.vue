@@ -3,7 +3,7 @@
     <Missie text="Het was: Strooien" />
   </div>
   <div v-else-if="role === 'subScreen'" class="full">
-    <Missie text="Strooien" />
+    <Missie text="Letta, je mag weer gaan zitten" />
     <AudioStart audio="/2022/audio/letta-goed.mp3" />
   </div>
   <NextSceneButton v-else :role="role" />

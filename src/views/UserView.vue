@@ -1,5 +1,5 @@
 <template>
-  <div class="full margin">
+  <div class="full">
     <component :is="'scene'+$store.getters.scene" role="user"/>
   </div>
 </template>
